@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Uma biblioteca de áudios bíblicos organizados por momentos da vida para ouvir a Palavra no seu dia a dia.">
+<title>Voz da Palavra | Áudios Bíblicos para Cada Momento</title>
+<style>
+:root{
+  --bg:#080808;--bg-soft:#101010;--card:#151515;--card-2:#1b1b1b;
+  --text:#f7f5f2;--muted:#aaa6a0;--line:#2b2927;--orange:#ff7a1a;
+  --orange-2:#ff9a4b;--orange-dark:#d95b08;--radius:22px;
+  --shadow:0 24px 70px rgba(0,0,0,.38);--max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+a{color:inherit;text-decoration:none}
+button,a{ -webkit-tap-highlight-color:transparent}
+.container{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+section{padding:88px 0}
+.announcement{background:var(--orange);color:#140b05;text-align:center;padding:10px 16px;font-size:12px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+.nav{border-bottom:1px solid rgba(255,255,255,.07);background:rgba(8,8,8,.9);backdrop-filter:blur(12px)}
+.nav-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.02em}
+.brand-mark{width:34px;height:34px;display:grid;place-items:center;background:var(--orange);color:#140b05;border-radius:10px;font-size:17px;font-weight:950}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700}
+.nav-links{display:flex;align-items:center;gap:24px;color:#c9c5bf;font-size:13px}
+.nav-links a:hover{color:var(--orange-2)}
+.nav-cta,.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:12px;background:var(--orange);color:#160b04;font-weight:850;padding:14px 20px;transition:transform .2s,background .2s;cursor:pointer}
+.nav-cta{padding:11px 15px;font-size:12px}
+.nav-cta:hover,.btn:hover{background:var(--orange-2);transform:translateY(-2px)}
+.hero{padding:74px 0 80px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-20% -10% auto;height:650px;background:radial-gradient(ellipse at 50% 25%,rgba(255,122,26,.15),transparent 60%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.03fr .97fr;gap:55px;align-items:center;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,122,26,.45);background:rgba(255,122,26,.08);border-radius:999px;padding:8px 12px;color:#ffad72;font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.1em}
+.eyebrow:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 13px var(--orange)}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(38px,5.1vw,66px);line-height:1.02;letter-spacing:-.055em;margin:22px 0}
+.accent{color:var(--orange)}
+.hero-copy{max-width:590px;color:#c2bdb6;font-size:17px;line-height:1.75}
+.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin:27px 0 19px}
+.btn{padding:16px 23px;font-size:14px}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;border:1px solid #393531;border-radius:12px;padding:15px 20px;font-weight:750;color:#eee9e3;font-size:14px}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange-2)}
+.trust{display:flex;flex-wrap:wrap;gap:17px;color:#a9a39b;font-size:11px}
+.trust span{display:flex;align-items:center;gap:7px}
+.trust i{width:5px;height:5px;border-radius:50%;background:var(--orange);display:inline-block}
+.hero-visual{min-height:500px;position:relative;display:grid;place-items:center}
+.glow{position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:rgba(255,122,26,.11);filter:blur(60px)}
+.device{position:relative;width:min(340px,80%);border:1px solid #3a3733;background:linear-gradient(145deg,#242321,#0d0d0d 65%);border-radius:29px;padding:14px;box-shadow:0 35px 90px rgba(0,0,0,.65),0 0 0 7px rgba(255,255,255,.025);transform:rotate(2deg)}
+.device-screen{border-radius:19px;background:#10100f;padding:20px 16px 18px;min-height:420px;overflow:hidden}
+.device-top{display:flex;justify-content:space-between;align-items:center;color:#8c8780;font-size:10px;margin-bottom:25px}
+.mini-brand{display:flex;align-items:center;gap:7px;color:#f8f4ef;font-weight:800;font-size:11px}
+.mini-brand b{background:var(--orange);color:#17100a;border-radius:5px;padding:4px 6px}
+.device-screen h3{font-size:23px;letter-spacing:-.04em;line-height:1.1;margin-bottom:8px}
+.device-screen .hint{font-size:11px;color:#9c968e;margin-bottom:17px}
+.audio-tile{display:flex;align-items:center;gap:11px;background:#1a1917;border:1px solid #2b2926;border-radius:13px;padding:11px;margin-bottom:9px}
+.audio-icon{flex:0 0 39px;height:39px;border-radius:10px;background:rgba(255,122,26,.13);display:grid;place-items:center;color:var(--orange);font-size:16px}
+.audio-info{min-width:0;flex:1}
+.audio-info strong{display:block;font-size:11px;line-height:1.35;margin-bottom:3px}
+.audio-info small{font-size:9px;color:#918b83}
+.play{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:var(--orange);color:#170b04;font-size:10px;padding-left:2px}
+.now-playing{margin-top:18px;border-top:1px solid #2b2926;padding-top:14px}
+.now-playing small{color:#9d968e;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.now-playing strong{display:block;font-size:12px;margin:4px 0 12px}
+.wave{height:26px;display:flex;align-items:center;gap:3px}
+.wave span{display:block;width:3px;border-radius:5px;background:var(--orange);height:var(--h);opacity:var(--o,1)}
+.float-card{position:absolute;right:0;bottom:45px;width:190px;padding:15px;border:1px solid #39332d;background:rgba(21,21,21,.94);border-radius:16px;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.float-card small{display:block;color:#a8a198;font-size:10px;margin-bottom:4px}
+.float-card strong{font-size:13px}
+.float-card .tiny-line{height:3px;background:#39332d;border-radius:5px;margin-top:12px;overflow:hidden}
+.float-card .tiny-line span{display:block;width:68%;height:100%;background:var(--orange)}
+.section-head{text-align:center;max-width:760px;margin:0 auto 43px}
+.kicker{font-size:11px;color:var(--orange);font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:13px}
+h2{font-size:clamp(30px,4vw,46px);letter-spacing:-.045em;line-height:1.1;margin-bottom:15px}
+.section-head p{color:var(--muted);font-size:15px;line-height:1.8;max-width:650px;margin:0 auto}
+.section-dark{background:#0e0e0e;border-top:1px solid #171717;border-bottom:1px solid #171717}
+.benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.benefit{border:1px solid var(--line);background:linear-gradient(145deg,#171716,#101010);border-radius:18px;padding:25px}
+.line-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;color:var(--orange);border:1px solid rgba(255,122,26,.25);background:rgba(255,122,26,.08);font-size:20px;margin-bottom:20px}
+.benefit h3{font-size:17px;margin-bottom:9px}
+.benefit p{color:var(--muted);font-size:13px;line-height:1.75;margin:0}
+.preview-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:stretch}
+.preview-intro{padding:24px 10px 24px 0}
+.preview-intro p{color:var(--muted);font-size:15px;line-height:1.8}
+.check-list{list-style:none;padding:0;margin:22px 0;display:grid;gap:13px}
+.check-list li{display:flex;gap:10px;color:#d4cfc8;font-size:13px}
+.check-list li:before{content:"✓";color:var(--orange);font-weight:900}
+.preview-panel{border:1px solid #302c28;border-radius:24px;background:linear-gradient(145deg,#191817,#0d0d0d);padding:20px;box-shadow:var(--shadow)}
+.preview-panel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.preview-panel-top strong{font-size:14px}
+.preview-panel-top span{color:#aaa198;font-size:10px}
+.collection-list{display:grid;gap:10px}
+.collection{display:grid;grid-template-columns:47px 1fr auto;gap:12px;align-items:center;border:1px solid #2c2926;background:#141413;border-radius:14px;padding:12px}
+.collection-cover{width:47px;height:47px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#ff9b4b,#d85c0a);color:#211006;font-size:19px;font-weight:900}
+.collection:nth-child(2) .collection-cover{background:linear-gradient(145deg,#4a4945,#222220);color:#ff9a4b}
+.collection:nth-child(3) .collection-cover{background:linear-gradient(145deg,#79401f,#2d1b10);color:#ffc08e}
+.collection:nth-child(4) .collection-cover{background:linear-gradient(145deg,#5b5143,#28231d);color:#f2c99d}
+.collection strong{display:block;font-size:12px;margin-bottom:3px}
+.collection small{display:block;color:#99928a;font-size:10px}
+.collection .play{width:30px;height:30px}
+.preview-note{font-size:10px;color:#7f7972;margin:14px 2px 0}
+.bonus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bonus{position:relative;overflow:hidden;border:1px solid #302b26;border-radius:19px;padding:24px;background:linear-gradient(150deg,#1b1917,#101010)}
+.bonus:after{content:"";position:absolute;right:-35px;top:-35px;width:105px;height:105px;border-radius:50%;border:1px solid rgba(255,122,26,.22)}
+.bonus-tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#ffad72;border:1px solid rgba(255,122,26,.35);border-radius:99px;padding:5px 8px;margin-bottom:17px}
+.bonus h3{font-size:17px;margin-bottom:8px}
+.bonus p{font-size:13px;color:var(--muted);line-height:1.75;margin:0}
+.offer-section{background:radial-gradient(ellipse at 50% 45%,rgba(255,122,26,.08),transparent 55%),#0c0c0c;border-block:1px solid #1c1a18}
+.offer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:900px;margin:auto;align-items:stretch}
+.offer-card{position:relative;display:flex;flex-direction:column;border:1px solid #34302c;border-radius:23px;background:linear-gradient(150deg,#191817,#101010);padding:29px;overflow:hidden}
+.offer-card.featured{border:1px solid var(--orange);box-shadow:0 0 0 1px rgba(255,122,26,.15),0 25px 70px rgba(0,0,0,.3)}
+.featured-label{position:absolute;top:0;right:0;background:var(--orange);color:#170b04;padding:8px 13px;border-radius:0 21px 0 13px;font-size:9px;letter-spacing:.09em;text-transform:uppercase;font-weight:950}
+.offer-name{font-size:21px;font-weight:850;margin-bottom:7px}
+.offer-desc{font-size:13px;color:var(--muted);min-height:44px;margin-bottom:20px}
+.price-label{font-size:11px;color:#a8a198}
+.price{font-size:42px;font-weight:900;letter-spacing:-.05em;line-height:1.2;margin:5px 0 3px}
+.price small{font-size:14px;letter-spacing:0}
+.price-note{font-size:10px;color:#918b83;margin-bottom:22px}
+.offer-divider{height:1px;background:#302d29;margin-bottom:20px}
+.offer-includes{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:12px;flex:1}
+.offer-includes li{font-size:12px;color:#d9d3cc;display:flex;gap:9px}
+.offer-includes li:before{content:"✓";color:var(--orange);font-weight:900}
+.offer-card .btn{width:100%;margin-top:auto}
+.offer-card .btn-outline{width:100%;margin-top:auto}
+.offer-foot{font-size:10px;color:#89837b;text-align:center;margin-top:13px}
+.guarantee{display:flex;align-items:center;gap:20px;max-width:760px;margin:42px auto 0;padding:23px;border:1px solid #302d29;background:#121211;border-radius:18px}
+.guarantee-mark{flex:0 0 54px;height:54px;border:1px solid rgba(255,122,26,.4);border-radius:50%;display:grid;place-items:center;color:var(--orange);font-size:22px}
+.guarantee h3{font-size:15px;margin:0 0 5px}
+.guarantee p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+.faq{max-width:800px;margin:auto;display:grid;gap:10px}
+details{border:1px solid #2c2926;border-radius:14px;background:#121211;padding:17px 19px}
+summary{cursor:pointer;list-style:none;font-weight:750;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:22px;color:var(--orange);font-weight:400}
+details[open] summary:after{content:"−"}
+details p{font-size:13px;color:var(--muted);line-height:1.8;margin:13px 0 0}
+.final-cta{padding:75px 0;text-align:center;background:radial-gradient(ellipse at center,rgba(255,122,26,.13),transparent 62%)}
+.final-cta p{max-width:600px;margin:0 auto 24px;color:var(--muted);line-height:1.8}
+.footer{border-top:1px solid #242220;padding:25px 0;color:#77716a;font-size:10px}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.disclaimer{font-size:10px;color:#77716a;max-width:820px;margin-top:13px;line-height:1.7}
+
+/* Welcome invitation and confirmation */
+.welcome-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.9);backdrop-filter:blur(14px)}
+.welcome-overlay[hidden]{display:none}
+.welcome-card{width:min(520px,100%);max-height:min(92vh,920px);overflow:auto;background:linear-gradient(150deg,#1b1917,#0c0c0c);border:1px solid #493629;border-radius:25px;padding:clamp(25px,5vw,42px);text-align:center;box-shadow:0 30px 100px rgba(0,0,0,.7),0 0 55px rgba(255,122,26,.07);position:relative;animation:welcome-in .35s ease both}
+.welcome-close{position:absolute;top:13px;right:13px;width:38px;height:38px;display:grid;place-items:center;border:1px solid #45403a;border-radius:50%;background:#151412;color:#f5eee7;font-size:24px;line-height:1;cursor:pointer;transition:background .2s,border-color .2s,transform .2s;z-index:2}
+.welcome-close:hover{background:rgba(255,122,26,.16);border-color:var(--orange);transform:rotate(90deg)}
+.welcome-symbol{width:58px;height:58px;display:grid;place-items:center;border-radius:17px;background:rgba(255,122,26,.12);border:1px solid rgba(255,122,26,.35);color:var(--orange);font-size:27px;margin:0 auto 22px}
+.welcome-card h2{font-size:clamp(29px,6vw,42px);line-height:1.08;letter-spacing:-.045em;margin:0 0 13px}
+.welcome-card p{color:#bcb5ad;font-size:14px;line-height:1.8;margin:0 auto 25px;max-width:390px}
+.welcome-actions{display:grid;gap:11px}
+.welcome-actions .btn,.welcome-actions .btn-outline{width:100%;min-height:50px}
+.welcome-actions .btn-outline{background:transparent;cursor:pointer}
+.welcome-actions .btn-outline:hover{background:#1b1917}
+.welcome-video{width:min(100%,330px);aspect-ratio:9/16;max-height:44vh;object-fit:cover;border:1px solid #37312b;border-radius:16px;background:#050505;display:block;margin:0 auto 12px}
+.welcome-video-copy{font-size:12px!important;margin-bottom:16px!important}
+.welcome-step[hidden]{display:none}
+.welcome-confirm{padding:15px 0 3px}
+.welcome-confirm h2{font-size:clamp(25px,5vw,34px)}
+.welcome-confirm .welcome-actions{grid-template-columns:1fr 1fr}
+.welcome-confirm .btn-outline{border-color:#51473d}
+.welcome-step[hidden],.welcome-confirm[hidden]{display:none}
+body.modal-open{overflow:hidden}
+@keyframes welcome-in{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Reveal-on-scroll and visual accents */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+.cross-mark{position:absolute;width:22px;height:34px;opacity:.22;pointer-events:none;filter:drop-shadow(0 0 10px rgba(255,122,26,.25))}
+.cross-mark:before,.cross-mark:after{content:"";position:absolute;background:linear-gradient(180deg,#ffb16f,var(--orange-dark));border-radius:2px}
+.cross-mark:before{width:4px;height:34px;left:9px;top:0}
+.cross-mark:after{width:22px;height:4px;left:0;top:9px}
+.hero,.section-dark,.offer-section,.final-cta{position:relative;overflow:hidden}
+.hero>.container,.section-dark>.container,.offer-section>.container,.final-cta>.container{position:relative;z-index:1}
+.hero .cross-a{top:12%;left:4%}.hero .cross-b{right:5%;top:22%;transform:scale(.72)}
+.section-dark .cross-a{right:5%;top:15%;transform:scale(.7)}
+.offer-section .cross-a{left:4%;bottom:15%;transform:scale(.8)}
+.final-cta .cross-a{right:8%;top:20%;transform:scale(.75)}
+.collection,.benefit,.bonus{transition:border-color .22s,background .22s,transform .22s,box-shadow .22s;cursor:pointer}
+.collection:hover,.benefit:hover,.bonus:hover{border-color:rgba(255,122,26,.48);transform:translateY(-2px)}
+.collection.is-selected,.benefit.is-selected,.bonus.is-selected{border-color:var(--orange);background:linear-gradient(145deg,rgba(255,122,26,.14),#141413);box-shadow:0 0 0 1px rgba(255,122,26,.16),0 12px 34px rgba(0,0,0,.18)}
+@media(prefers-reduced-motion:reduce){.reveal,.welcome-card,.collection,.benefit,.bonus{transition:none;animation:none}.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+@media(max-width:560px){
+ .welcome-card{padding:54px 20px 25px;border-radius:21px}
+ .welcome-card p{font-size:13px}
+ .welcome-video{max-height:38vh}
+ .welcome-close{top:10px;right:10px;width:35px;height:35px}
+ .welcome-confirm .welcome-actions{grid-template-columns:1fr 1fr}
+}
+@media(max-width:850px){
+ .hero-grid{grid-template-columns:1fr;gap:28px}.hero-copy-wrap{text-align:center}.hero-copy{margin-inline:auto}.hero-actions,.trust{justify-content:center}.hero-visual{min-height:480px}
+ .benefit-grid,.bonus-grid{grid-template-columns:repeat(2,1fr)}.preview-grid{grid-template-columns:1fr}.preview-intro{padding:0}
+ .nav-links{display:none}
+}
+@media(max-width:560px){
+ .container{width:min(var(--max),calc(100% - 28px))}section{padding:65px 0}.announcement{font-size:9px;letter-spacing:.07em}.nav-inner{height:63px}.nav-cta{font-size:10px;padding:10px 11px}
+ .hero{padding:54px 0 56px}h1{font-size:43px}.hero-copy{font-size:15px}.hero-actions{flex-direction:column}.hero-actions a{width:100%}.trust{gap:10px;font-size:10px}
+ .hero-visual{min-height:440px}.device{width:min(320px,84%)}.device-screen{min-height:395px}.float-card{right:-1px;bottom:16px;width:156px;padding:12px}
+ .benefit-grid,.bonus-grid,.offer-grid{grid-template-columns:1fr}.benefit{padding:21px}.offer-card{padding:24px}.offer-desc{min-height:0}
+ .collection{grid-template-columns:42px 1fr auto;padding:10px}.collection-cover{width:42px;height:42px}.preview-panel{padding:13px}.guarantee{align-items:flex-start;padding:18px}.price{font-size:39px}
+}
+</style>
+</head>
+<body class="modal-open">
+
+<div class="welcome-overlay" id="welcomeOverlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="welcome-card">
+    <button class="welcome-close" id="welcomeCloseQuestion" type="button" aria-label="Fechar convite">×</button>
+    <div class="welcome-step" id="welcomeQuestion">
+      <div class="welcome-symbol" aria-hidden="true">✦</div>
+      <div class="kicker">Um convite para você</div>
+      <h2 id="welcomeTitle">Deus quer falar com você.</h2>
+      <p>Você aceita ouvir?</p>
+      <div class="welcome-actions">
+        <button class="btn" id="welcomeYes" type="button">Sim, quero ouvir</button>
+        <button class="btn-outline" id="welcomeSkip" type="button">Prosseguir para o site</button>
+      </div>
+    </div>
+    <div class="welcome-step" id="welcomeVideoStep" hidden>
+      <button class="welcome-close" id="welcomeCloseVideo" type="button" aria-label="Fechar vídeo">×</button>
+      <div class="kicker">Uma mensagem para o seu coração</div>
+      <h2>Reserve um momento para ouvir.</h2>
+      <p class="welcome-video-copy">Uma mensagem de fé e esperança — e conheça a biblioteca Voz da Palavra.</p>
+      <video class="welcome-video" id="welcomeVideo" controls playsinline preload="metadata" poster="thumb-video.jpg">
+        <source src="video-motivacional.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução deste vídeo.
+      </video>
+      <div class="welcome-actions">
+        <button class="btn-outline" id="welcomePular" type="button">Pular vídeo e ir para o site</button>
+      </div>
+    </div>
+    <div class="welcome-confirm" id="welcomeConfirm" hidden>
+      <button class="welcome-close" id="welcomeCancelX" type="button" aria-label="Voltar">×</button>
+      <div class="welcome-symbol" aria-hidden="true">?</div>
+      <h2>Tem certeza que deseja sair?</h2>
+      <p>Você pode continuar e conhecer a Voz da Palavra ou fechar este convite agora.</p>
+      <div class="welcome-actions">
+        <button class="btn" id="welcomeConfirmYes" type="button">Sim, sair</button>
+        <button class="btn-outline" id="welcomeConfirmNo" type="button">Não, continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="announcement">Condição especial de lançamento · Acesso digital após a confirmação da compra</div>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#inicio" aria-label="Voz da Palavra, início">
+      <span class="brand-mark">V</span><span>VOZ DA PALAVRA<small>Áudios bíblicos</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="#conteudo">O que você recebe</a><a href="#por-dentro">Veja por dentro</a><a href="#bonus">Bônus</a><a href="#ofertas">Planos</a>
+    </nav>
+    <a class="nav-cta" href="#ofertas">Ver ofertas <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main>
+<section class="hero reveal" id="inicio"><span class="cross-mark cross-a" aria-hidden="true"></span><span class="cross-mark cross-b" aria-hidden="true"></span>
+  <div class="container hero-grid">
+    <div class="hero-copy-wrap">
+      <span class="eyebrow">Voz da Palavra</span>
+      <h1>Há momentos em que tudo o que precisamos é <span class="accent">ouvir a Palavra.</span></h1>
+      <p class="hero-copy">Áudios bíblicos organizados para acompanhar você ao acordar, antes de dormir e nos momentos em que seu coração precisa de fé e esperança.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#ofertas">Quero conhecer os áudios <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-label="Prévia ilustrativa da biblioteca de áudios">
+      <div class="glow"></div>
+      <div class="device">
+        <div class="device-screen">
+          <div class="device-top"><span>VOZ DA PALAVRA</span><span>ÁUDIOS BÍBLICOS</span></div>
+          <div class="mini-brand"><b>V</b> SUA BIBLIOTECA</div>
+          <h3>Uma palavra para<br>cada momento.</h3>
+          <p class="hint">Escolha uma coleção para começar.</p>
+          <div class="audio-tile"><div class="audio-icon">☼</div><div class="audio-info"><strong>Começar o dia com fé</strong><small>Gratidão · Esperança · Confiança</small></div><span class="play">▶</span></div>
+          <div class="audio-tile"><div class="audio-icon">◐</div><div class="audio-info"><strong>Antes de dormir</strong><small>Descanso · Paz · Reflexão</small></div><span class="play">▶</span></div>
+          <div class="audio-tile"><div class="audio-icon">♡</div><div class="audio-info"><strong>Quando o coração pesar</strong><small>Consolo · Coragem · Esperança</small></div><span class="play">▶</span></div>
+          <div class="audio-tile"><div class="audio-icon">✧</div><div class="audio-info"><strong>Fortalecer a fé</strong><small>Confiança · Perseverança</small></div><span class="play">▶</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark reveal" id="conteudo">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Tudo em um só lugar</div>
+      <h2>O que você recebe ao adquirir a <span class="accent">Voz da Palavra?</span></h2>
+      <p>Uma biblioteca pensada para facilitar o acesso a passagens bíblicas em diferentes momentos da rotina, sem precisar procurar cada trecho separadamente.</p>
+    </div>
+    <div class="benefit-grid">
+      <article class="benefit reveal"><div class="line-icon">01</div><h3>Áudios bíblicos narrados</h3><p>Passagens selecionadas para ouvir com tranquilidade, com identificação do livro, capítulo e versículo.</p></article>
+      <article class="benefit reveal"><div class="line-icon">02</div><h3>Coleções por momento</h3><p>Temas organizados para você encontrar com mais facilidade uma leitura que combine com o momento que está vivendo.</p></article>
+      <article class="benefit reveal"><div class="line-icon">03</div><h3>Praticidade no dia a dia</h3><p>Acesse pelo celular ou computador e escolha quando quer ouvir: em uma pausa, pela manhã ou à noite.</p></article>
+      <article class="benefit reveal"><div class="line-icon">04</div><h3>Seleções para refletir</h3><p>Uma organização que ajuda você a voltar às passagens que deseja ouvir novamente e contemplar com calma.</p></article>
+      <article class="benefit reveal"><div class="line-icon">05</div><h3>Temas para diferentes fases</h3><p>Fé, gratidão, coragem, esperança, família, decisões e passagens para momentos de dificuldade.</p></article>
+      <article class="benefit reveal"><div class="line-icon">06</div><h3>Seu momento, seu ritmo</h3><p>Ouça uma faixa por vez, retome quando quiser e construa uma rotina pessoal de escuta e reflexão.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="por-dentro">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Uma prévia da experiência</div>
+      <h2>Veja por dentro do <span class="accent">material</span></h2>
+      <p>As coleções são organizadas por tema para deixar a experiência simples, intuitiva e fácil de usar.</p>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-intro">
+        <h3 style="font-size:25px;letter-spacing:-.03em">Encontre o tema. Escolha o áudio. Dê o play.</h3>
+        <p>Em vez de receber uma lista desorganizada de arquivos, a proposta é encontrar as passagens em coleções com nomes claros e objetivos.</p>
+        <ul class="check-list">
+          <li>Coleções com identidade visual própria</li>
+          <li>Áudios identificados por título e tema</li>
+          <li>Referências bíblicas para consultar a passagem</li>
+          <li>Navegação pensada para telas de celular</li>
+        </ul>
+        <a class="btn" href="#ofertas">Quero acessar a biblioteca <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="preview-panel reveal">
+        <div class="preview-panel-top"><strong>Explore as coleções</strong><span>PRÉVIA ILUSTRATIVA</span></div>
+        <div class="collection-list">
+          <div class="collection"><div class="collection-cover">☼</div><div><strong>Ao acordar e começar o dia</strong><small>Gratidão · Sabedoria · Confiança</small></div><span class="play">▶</span></div>
+          <div class="collection"><div class="collection-cover">◐</div><div><strong>Antes de dormir</strong><small>Descanso · Paz · Entrega</small></div><span class="play">▶</span></div>
+          <div class="collection"><div class="collection-cover">♡</div><div><strong>Quando estiver angustiado</strong><small>Consolo · Esperança · Coragem</small></div><span class="play">▶</span></div>
+          <div class="collection"><div class="collection-cover">✧</div><div><strong>Para fortalecer a fé</strong><small>Confiança · Perseverança · Oração</small></div><span class="play">▶</span></div>
+        </div>
+        <p class="preview-note">Os títulos, categorias e a interface acima são uma demonstração visual. Ajuste-os conforme o conteúdo final produzido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark reveal" id="bonus"><span class="cross-mark cross-a" aria-hidden="true"></span>
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Para complementar sua experiência</div>
+      <h2>Bônus <span class="accent">exclusivos</span></h2>
+      <p>Materiais complementares que ajudam você a organizar momentos de leitura, escuta e reflexão ao longo da semana.</p>
+    </div>
+    <div class="bonus-grid">
+      <article class="bonus reveal"><span class="bonus-tag">Bônus 01</span><h3>Plano de escuta de 7 dias</h3><p>Uma sugestão simples de temas para acompanhar durante uma semana e começar a criar sua própria rotina.</p></article>
+      <article class="bonus reveal"><span class="bonus-tag">Bônus 02</span><h3>Guia de referências bíblicas</h3><p>Um PDF organizado por assuntos, para localizar passagens e anotar aquelas que você deseja revisitar.</p></article>
+      <article class="bonus reveal"><span class="bonus-tag">Bônus 03</span><h3>Caderno de reflexão pessoal</h3><p>Páginas para registrar aprendizados, pensamentos e passagens que marcaram seu momento de escuta.</p></article>
+    </div>
+    <p style="text-align:center;color:#77716a;font-size:10px;margin:18px 0 0">Inclua estes bônus na oferta somente depois de preparar os materiais correspondentes.</p>
+  </div>
+</section>
+
+<section class="offer-section reveal" id="ofertas"><span class="cross-mark cross-a" aria-hidden="true"></span>
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Escolha sua experiência</div>
+      <h2>Comece a ouvir a Palavra <span class="accent">no seu ritmo</span></h2>
+      <p>Escolha a opção que combina com você. Os valores e os conteúdos abaixo são sugestões editáveis para estruturar sua oferta.</p>
+    </div>
+    <div class="offer-grid">
+      <article class="offer-card reveal">
+        <div class="offer-name">Plano Essencial</div>
+        <p class="offer-desc">Para quem quer começar com uma seleção de áudios bíblicos organizada por temas.</p>
+        <div class="price-label">Valor sugerido</div>
+        <div class="price"><small>R$</small> 19,90</div>
+        <div class="price-note">Pagamento único · valor ilustrativo</div>
+        <div class="offer-divider"></div>
+        <ul class="offer-includes">
+          <li>Biblioteca inicial de áudios bíblicos</li>
+          <li>Coleções temáticas selecionadas</li>
+          <li>Acesso pelo celular e computador</li>
+          <li>Referências das passagens narradas</li>
+        </ul>
+        <a class="btn-outline" href="#perguntas">Quero o Plano Essencial</a>
+        <div class="offer-foot">Botão de demonstração — inserir o link de checkout.</div>
+      </article>
+      <article class="offer-card featured reveal">
+        <span class="featured-label">Mais completo</span>
+        <div class="offer-name">Plano Completo</div>
+        <p class="offer-desc">Para quem quer explorar mais temas e ter materiais complementares de reflexão.</p>
+        <div class="price-label">Valor sugerido</div>
+        <div class="price"><small>R$</small> 29,90</div>
+        <div class="price-note">Pagamento único · valor ilustrativo</div>
+        <div class="offer-divider"></div>
+        <ul class="offer-includes">
+          <li>Todos os áudios incluídos no plano essencial</li>
+          <li>Coleções temáticas ampliadas</li>
+          <li>Plano de escuta de 7 dias</li>
+          <li>Guia de referências bíblicas em PDF</li>
+          <li>Caderno de reflexão pessoal</li>
+        </ul>
+        <a class="btn" href="#perguntas">Quero o Plano Completo <span aria-hidden="true">→</span></a>
+        <div class="offer-foot">Botão de demonstração — inserir o link de checkout.</div>
+      </article>
+    </div>
+    <div class="guarantee">
+      <div class="guarantee-mark">✓</div>
+      <div><h3>Compra com informações claras</h3><p>Antes de publicar, informe aqui a política de garantia aplicável, o prazo de acesso, os meios de suporte e as condições reais da compra. Não anuncie uma garantia que ainda não esteja definida.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="perguntas">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Dúvidas frequentes</div>
+      <h2>O que você precisa <span class="accent">saber</span></h2>
+      <p>Informações importantes para entender como a biblioteca poderá ser utilizada.</p>
+    </div>
+    <div class="faq">
+      <details><summary>Como vou acessar os áudios?</summary><p>O formato final de entrega deve ser informado na compra. A proposta desta página é uma biblioteca acessível pelo navegador, com coleções organizadas e opção de ouvir os arquivos.</p></details>
+      <details><summary>Posso ouvir pelo celular?</summary><p>Sim, desde que o formato final de entrega e a hospedagem sejam configurados para funcionar em navegadores móveis. Recomenda-se testar em diferentes aparelhos antes de publicar.</p></details>
+      <details><summary>Preciso ouvir tudo de uma vez?</summary><p>Não. A proposta é que você escolha uma coleção e ouça no seu próprio ritmo, de acordo com a sua rotina.</p></details>
+      <details><summary>Os áudios substituem a leitura da Bíblia?</summary><p>Os áudios são uma forma complementar de ouvir e refletir sobre passagens bíblicas. Você pode acompanhar as referências na sua própria Bíblia e aprofundar a leitura quando desejar.</p></details>
+      <details><summary>Quando recebo o acesso?</summary><p>Edite esta resposta conforme o processo real de entrega, por exemplo, após a confirmação do pagamento e o envio das instruções de acesso.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta reveal"><span class="cross-mark cross-a" aria-hidden="true"></span>
+  <div class="container">
+    <div class="kicker">Um momento para a Palavra</div>
+    <h2>Reserve alguns minutos do seu dia<br>para <span class="accent">ouvir e refletir.</span></h2>
+    <p>Tenha suas coleções bíblicas organizadas em um só lugar e escolha a passagem que deseja ouvir em cada momento da sua rotina.</p>
+    <a class="btn" href="#ofertas">Conhecer os planos <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner"><span>© <span id="year"></span> Voz da Palavra. Todos os direitos reservados.</span><span>Produto digital independente.</span></div>
+    <p class="disclaimer">Antes de comercializar, confirme os direitos de reprodução e uso comercial da tradução bíblica escolhida, finalize os áudios e bônus anunciados, configure os links de checkout e revise as condições de acesso, suporte, privacidade e garantia. Esta página é um modelo visual; não representa uma plataforma funcional nem comprova que o conteúdo já esteja produzido.</p>
+  </div>
+</footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<script>
+(function(){
+  const overlay = document.getElementById('welcomeOverlay');
+  const question = document.getElementById('welcomeQuestion');
+  const videoStep = document.getElementById('welcomeVideoStep');
+  const confirmStep = document.getElementById('welcomeConfirm');
+  const video = document.getElementById('welcomeVideo');
+  let previousStep = 'question';
+
+  function showStep(step){
+    question.hidden = step !== 'question';
+    videoStep.hidden = step !== 'video';
+    confirmStep.hidden = step !== 'confirm';
+    previousStep = step === 'confirm' ? previousStep : step;
+    if(step === 'video' && video) video.load();
+  }
+  function closeWelcome(){
+    if(video) video.pause();
+    overlay.hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+  function askToClose(){
+    previousStep = question.hidden ? 'video' : 'question';
+    showStep('confirm');
+  }
+  function cancelClose(){
+    showStep(previousStep || 'question');
+  }
+
+  document.getElementById('welcomeYes').addEventListener('click', function(){ showStep('video'); });
+  document.getElementById('welcomeSkip').addEventListener('click', closeWelcome);
+  document.getElementById('welcomePular').addEventListener('click', closeWelcome);
+  document.getElementById('welcomeCloseQuestion').addEventListener('click', askToClose);
+  document.getElementById('welcomeCloseVideo').addEventListener('click', askToClose);
+  document.getElementById('welcomeConfirmYes').addEventListener('click', closeWelcome);
+  document.getElementById('welcomeConfirmNo').addEventListener('click', cancelClose);
+  document.getElementById('welcomeCancelX').addEventListener('click', cancelClose);
+
+  document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape' && !overlay.hidden){
+      if(!confirmStep.hidden) cancelClose();
+      else askToClose();
+    }
+  });
+
+  // Reveal sections as the visitor scrolls; gracefully show everything if unsupported.
+  const revealItems = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.12, rootMargin: '0px 0px -35px 0px'});
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = (index % 3) * 70 + 'ms';
+      observer.observe(item);
+    });
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+  }
+
+  // Clickable topics/cards only gain a visual highlight; no navigation or loading.
+  document.querySelectorAll('.collection,.benefit,.bonus').forEach(card => {
+    card.setAttribute('tabindex','0');
+    card.setAttribute('role','button');
+    card.setAttribute('aria-pressed','false');
+    function toggleCard(){
+      const selected = card.classList.toggle('is-selected');
+      card.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    }
+    card.addEventListener('click', function(event){
+      if(event.target.closest('a,button')) return;
+      toggleCard();
+    });
+    card.addEventListener('keydown', function(event){
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        toggleCard();
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
